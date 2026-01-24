@@ -4,13 +4,15 @@
 <meta charset="UTF-8">
 <title>Gift Drop</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Telegram WebApp SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 html, body {
   margin: 0;
   padding: 0;
-  background: #ffffff; /* 🤍 WHITE BACKGROUND */
+  background: #ffffff;
   font-family: Arial, sans-serif;
   color: #111;
 }
@@ -21,7 +23,7 @@ html, body {
   padding: 16px;
 }
 
-/* 🧱 CARD */
+/* CARD */
 .card {
   flex: 1;
   background: linear-gradient(180deg, #ffffff, #f2f2f2);
@@ -31,7 +33,7 @@ html, body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* 🏷 TAG */
+/* TAG */
 .tag {
   position: absolute;
   top: 12px;
@@ -43,7 +45,7 @@ html, body {
   color: #555;
 }
 
-/* ⭐ STAR */
+/* STAR */
 .star-3d {
   text-align: center;
   margin-top: 28px;
@@ -55,7 +57,7 @@ html, body {
     0 10px 15px rgba(255,215,0,0.4);
 }
 
-/* 🎂 HAPPY BIRTHDAY */
+/* BIRTHDAY TEXT */
 @keyframes happyGlow {
   0% { transform: scale(1); }
   50% { transform: scale(1.08); }
@@ -84,7 +86,7 @@ html, body {
   color: #666;
 }
 
-/* 🔘 BUTTON */
+/* BUTTON */
 .btn {
   margin-top: 14px;
   width: 100%;
@@ -96,13 +98,11 @@ html, body {
   cursor: pointer;
 }
 
-/* ⭐ STAR BUTTON */
 .star-btn {
   background: linear-gradient(90deg, #ffd700, #ffb700);
   color: #000;
 }
 
-/* 🎁 GIFT BUTTON */
 .gift-btn {
   background: linear-gradient(90deg, #ff4ecd, #ff8a00);
   color: #fff;
@@ -118,7 +118,7 @@ html, body {
 
 <div class="container">
 
-  <!-- ⭐ STARS CARD -->
+  <!-- STARS CARD -->
   <div class="card">
     <div class="tag">TG Stars</div>
     <div class="star-3d">⭐</div>
@@ -127,7 +127,7 @@ html, body {
     <button class="btn star-btn" onclick="send100Stars()">Send 100 ⭐</button>
   </div>
 
-  <!-- 🎁 GIFTS CARD -->
+  <!-- GIFTS CARD -->
   <div class="card">
     <div class="tag">TG Gifts</div>
     <div class="bday-3d">🎂 Happy<br>Birthday</div>
@@ -140,19 +140,17 @@ html, body {
 
 <script>
 Telegram.WebApp.ready();
+Telegram.WebApp.expand();
 
-/* ⭐ Telegram Stars Payment */
+/* ⭐ Open Telegram Stars Purchase Page */
 function send100Stars() {
-  if (Telegram.WebApp.openTelegramStars) {
-    Telegram.WebApp.openTelegramStars(); // Official Telegram Stars UI
-  } else {
-    Telegram.WebApp.openTelegramLink("https://t.me/Realtakaincamebot");
-  }
+  // Official & Safe Stars purchase page
+  Telegram.WebApp.openTelegramLink("https://t.me/stars");
 }
 
-/* 🎁 Open Gift Receiver ID */
+/* 🎁 Open Gift Receiver */
 function sendGift() {
-  Telegram.WebApp.openTelegramLink("https://t.me/TakaInncomeSupport");
+  Telegram.WebApp.openTelegramLink("https://t.me/Realtakaincamebot");
 }
 </script>
 
