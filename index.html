@@ -10,9 +10,9 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #0e0e0e;
+  background: #ffffff; /* 🤍 WHITE BACKGROUND */
   font-family: Arial, sans-serif;
-  color: #fff;
+  color: #111;
 }
 
 .container {
@@ -21,26 +21,29 @@ html, body {
   padding: 16px;
 }
 
+/* 🧱 CARD */
 .card {
   flex: 1;
-  background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
+  background: linear-gradient(180deg, #ffffff, #f2f2f2);
   border-radius: 18px;
   padding: 16px;
   position: relative;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
+/* 🏷 TAG */
 .tag {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.06);
   padding: 4px 10px;
   border-radius: 10px;
   font-size: 12px;
-  color: #aaa;
+  color: #555;
 }
 
+/* ⭐ STAR */
 .star-3d {
   text-align: center;
   margin-top: 28px;
@@ -49,9 +52,10 @@ html, body {
     0 2px 0 #d4af37,
     0 4px 0 #b8962e,
     0 6px 0 #8f6f1e,
-    0 10px 15px rgba(255,215,0,0.5);
+    0 10px 15px rgba(255,215,0,0.4);
 }
 
+/* 🎂 HAPPY BIRTHDAY */
 @keyframes happyGlow {
   0% { transform: scale(1); }
   50% { transform: scale(1.08); }
@@ -77,9 +81,10 @@ html, body {
 
 .sub {
   font-size: 14px;
-  color: #aaa;
+  color: #666;
 }
 
+/* 🔘 BUTTON */
 .btn {
   margin-top: 14px;
   width: 100%;
@@ -91,11 +96,13 @@ html, body {
   cursor: pointer;
 }
 
+/* ⭐ STAR BUTTON */
 .star-btn {
   background: linear-gradient(90deg, #ffd700, #ffb700);
   color: #000;
 }
 
+/* 🎁 GIFT BUTTON */
 .gift-btn {
   background: linear-gradient(90deg, #ff4ecd, #ff8a00);
   color: #fff;
@@ -111,6 +118,7 @@ html, body {
 
 <div class="container">
 
+  <!-- ⭐ STARS CARD -->
   <div class="card">
     <div class="tag">TG Stars</div>
     <div class="star-3d">⭐</div>
@@ -119,6 +127,7 @@ html, body {
     <button class="btn star-btn" onclick="send100Stars()">Send 100 ⭐</button>
   </div>
 
+  <!-- 🎁 GIFTS CARD -->
   <div class="card">
     <div class="tag">TG Gifts</div>
     <div class="bday-3d">🎂 Happy<br>Birthday</div>
@@ -132,10 +141,16 @@ html, body {
 <script>
 Telegram.WebApp.ready();
 
+/* ⭐ Telegram Stars Payment */
 function send100Stars() {
-  Telegram.WebApp.openTelegramLink("https://t.me/Realtakaincamebot");
+  if (Telegram.WebApp.openTelegramStars) {
+    Telegram.WebApp.openTelegramStars(); // Official Telegram Stars UI
+  } else {
+    Telegram.WebApp.openTelegramLink("https://t.me/Realtakaincamebot");
+  }
 }
 
+/* 🎁 Open Gift Receiver ID */
 function sendGift() {
   Telegram.WebApp.openTelegramLink("https://t.me/TakaInncomeSupport");
 }
