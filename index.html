@@ -32,12 +32,12 @@
   }
 
   .subtitle span {
-    color: #000; /* FOR black */
+    color: #000;
   }
 
   .subtitle2 {
     font-size: 26px;
-    color: #000; /* COMPLETING QUESTS black */
+    color: #000;
     margin-bottom: 28px;
   }
 
@@ -54,20 +54,21 @@
     flex: 1;
     border: none;
     background: transparent;
-    color: #666;
+    color: #555;
     padding: 14px 0;
     font-size: 16px;
+    font-weight: 600; /* ✅ thicker text */
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.25s ease;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Active button (purple glow) */
+  /* Active button */
   .seg-btn.active {
     background: linear-gradient(135deg, #ff5fd2, #8b5cf6);
     color: #fff;
-    font-weight: bold;
+    font-weight: 700; /* ✅ extra bold when active */
     box-shadow:
       0 0 12px rgba(255, 95, 210, 0.8),
       0 0 28px rgba(139, 92, 246, 0.7),
