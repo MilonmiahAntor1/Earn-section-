@@ -2,157 +2,83 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Gift Drop</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- Telegram WebApp SDK -->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>Telegram Buttons</title>
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #ffffff;
-  font-family: Arial, sans-serif;
-  color: #111;
-}
+  body {
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
-.container {
-  display: flex;
-  gap: 14px;
-  padding: 16px;
-}
+  .box {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 280px;
+  }
 
-/* CARD */
-.card {
-  flex: 1;
-  background: linear-gradient(180deg, #ffffff, #f2f2f2);
-  border-radius: 18px;
-  padding: 16px;
-  position: relative;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
+  a {
+    text-decoration: none;
+  }
 
-/* TAG */
-.tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(0,0,0,0.06);
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-  color: #555;
-}
+  .btn {
+    padding: 15px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.25s ease;
+  }
 
-/* STAR */
-.star-3d {
-  text-align: center;
-  margin-top: 28px;
-  font-size: 64px;
-  text-shadow:
-    0 2px 0 #d4af37,
-    0 4px 0 #b8962e,
-    0 6px 0 #8f6f1e,
-    0 10px 15px rgba(255,215,0,0.4);
-}
+  .btn img {
+    width: 18px;
+    height: 18px;
+  }
 
-/* BIRTHDAY TEXT */
-@keyframes happyGlow {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
+  /* Live Chat – unchanged */
+  .live {
+    background: #6f42c1;
+  }
 
-.bday-3d {
-  text-align: center;
-  margin-top: 30px;
-  font-size: 26px;
-  font-weight: bold;
-  background: linear-gradient(90deg, #ff4ecd, #ffb347, #4dd2ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: happyGlow 1.4s infinite;
-}
+  /* Support – Purple */
+  .support {
+    background: #8e44ad; /* purple */
+  }
 
-.title {
-  margin-top: 18px;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.sub {
-  font-size: 14px;
-  color: #666;
-}
-
-/* BUTTON */
-.btn {
-  margin-top: 14px;
-  width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: none;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.star-btn {
-  background: linear-gradient(90deg, #ffd700, #ffb700);
-  color: #000;
-}
-
-.gift-btn {
-  background: linear-gradient(90deg, #ff4ecd, #ff8a00);
-  color: #fff;
-}
-
-.btn:active {
-  transform: scale(0.96);
-}
+  .btn:hover {
+    transform: scale(1.04);
+    filter: brightness(1.08);
+  }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="box">
 
-  <!-- STARS CARD -->
-  <div class="card">
-    <div class="tag">TG Stars</div>
-    <div class="star-3d">⭐</div>
-    <div class="title">Stars</div>
-    <div class="sub">Send 100 Telegram Stars</div>
-    <button class="btn star-btn" onclick="send100Stars()">Send 100 ⭐</button>
-  </div>
+  <a href="https://t.me/TakaIncomeCommunity" target="_blank">
+    <div class="btn live">
+      <img src="https://telegram.org/img/t_logo.svg" alt="Telegram">
+      Live Chat
+    </div>
+  </a>
 
-  <!-- GIFTS CARD -->
-  <div class="card">
-    <div class="tag">TG Gifts</div>
-    <div class="bday-3d">🎂 Happy<br>Birthday</div>
-    <div class="title">Gifts</div>
-    <div class="sub">Sent a Premium Gifts</div>
-    <button class="btn gift-btn" onclick="sendGift()">Send a Gift</button>
-  </div>
+  <a href="https://t.me/TakaIncomeofficialchat" target="_blank">
+    <div class="btn support">
+      <img src="https://telegram.org/img/t_logo.svg" alt="Telegram">
+      Support on Telegram
+    </div>
+  </a>
 
 </div>
-
-<script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-
-/* ⭐ Open Telegram Stars Purchase Page */
-function send100Stars() {
-  // Official & Safe Stars purchase page
-  Telegram.WebApp.openTelegramLink("https://t.me/TakaInncomeSupport");
-}
-
-/* 🎁 Open Gift Receiver */
-function sendGift() {
-  Telegram.WebApp.openTelegramLink("https://t.me/TakaInncomeSupport");
-}
-</script>
 
 </body>
 </html>
