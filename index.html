@@ -2,83 +2,117 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Telegram Buttons</title>
+<title>Tasks UI</title>
 
 <style>
   body {
+    margin: 0;
     background: #ffffff;
     font-family: Arial, sans-serif;
+    color: #000;
+  }
+
+  .container {
+    max-width: 420px;
+    margin: auto;
+    padding: 28px 20px;
+  }
+
+  /* Title */
+  .title {
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .subtitle span {
+    color: #000; /* FOR black */
+  }
+
+  .subtitle2 {
+    font-size: 26px;
+    color: #000; /* COMPLETING QUESTS black */
+    margin-bottom: 28px;
+  }
+
+  /* Segmented control */
+  .segment {
+    background: #f0f0f0;
+    border-radius: 40px;
+    padding: 6px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    gap: 6px;
   }
 
-  .box {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    width: 280px;
+  .seg-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: #666;
+    padding: 14px 0;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  a {
-    text-decoration: none;
-  }
-
-  .btn {
-    padding: 15px;
-    border-radius: 14px;
-    font-size: 17px;
+  /* Active button (purple glow) */
+  .seg-btn.active {
+    background: linear-gradient(135deg, #ff5fd2, #8b5cf6);
+    color: #fff;
     font-weight: bold;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: 0.25s ease;
+    box-shadow:
+      0 0 12px rgba(255, 95, 210, 0.8),
+      0 0 28px rgba(139, 92, 246, 0.7),
+      0 0 45px rgba(139, 92, 246, 0.6);
   }
 
-  .btn img {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* Live Chat – unchanged */
-  .live {
-    background: #6f42c1;
-  }
-
-  /* Support – Purple */
-  .support {
-    background: #8e44ad; /* purple */
-  }
-
-  .btn:hover {
-    transform: scale(1.04);
-    filter: brightness(1.08);
+  .seg-btn:focus {
+    outline: none;
   }
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
 
-  <a href="https://t.me/TakaIncomeCommunity" target="_blank">
-    <div class="btn live">
-      <img src="https://telegram.org/img/t_logo.svg" alt="Telegram">
-      Live Chat
-    </div>
-  </a>
+  <div class="title">TASKS</div>
 
-  <a href="https://t.me/TakaIncomeofficialchat" target="_blank">
-    <div class="btn support">
-      <img src="https://telegram.org/img/t_logo.svg" alt="Telegram">
-      Support on Telegram
-    </div>
-  </a>
+  <div class="subtitle">
+    GET REWARDS <span>FOR</span>
+  </div>
+
+  <div class="subtitle2">
+    COMPLETING QUESTS.
+  </div>
+
+  <!-- Segmented Buttons -->
+  <div class="segment">
+    <button class="seg-btn active">In-game</button>
+    <button class="seg-btn">Partners</button>
+    <button class="seg-btn">Limited</button>
+  </div>
 
 </div>
+
+<script>
+  const buttons = document.querySelectorAll('.seg-btn');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
 
 </body>
 </html>
