@@ -1,221 +1,735 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Tasks UI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-  body {
-    margin: 0;
-    background: #ffffff;
-    font-family: Arial, sans-serif;
-    color: #000;
-  }
+  <title>Tasks UI</title>
 
-  .container {
-    max-width: 420px;
-    margin: auto;
-    padding: 28px 20px;
-  }
+  <!-- Telegram Mini App SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  .title {
-    font-size: 40px;
-    font-weight: 800;
-    margin-bottom: 10px;
-  }
+  <!-- AdsGram SDK -->
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-  .subtitle {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  .subtitle2 {
-    font-size: 26px;
-    margin-bottom: 28px;
-  }
+    body {
+      margin: 0;
+      background: #ffffff;
+      font-family: Arial, sans-serif;
+      color: #000;
+    }
 
-  /* Segmented buttons */
-  .segment {
-    background: #f0f0f0;
-    border-radius: 40px;
-    padding: 6px;
-    display: flex;
-    gap: 6px;
-    margin-bottom: 25px;
-  }
+    .container {
+      width: 100%;
+      max-width: 420px;
+      margin: auto;
+      padding: 28px 20px;
+    }
 
-  .seg-btn {
-    flex: 1;
-    border: none;
-    background: transparent;
-    color: #333;
-    padding: 15px 0;
-    font-size: 17px;
-    font-weight: 800;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.25s;
-  }
+    .title {
+      font-size: 40px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
 
-  .seg-btn.active {
-    background: linear-gradient(135deg, #ff5fd2, #8b5cf6);
-    color: #fff;
-    font-weight: 900;
-  }
+    .subtitle {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
 
-  /* 🟣 TASK CARD WITH ROTATING PURPLE BORDER */
-  .task-card {
-    position: relative;
-    display: none;
-    margin-bottom: 16px;
-    border-radius: 22px;
-    overflow: hidden;
-  }
+    .subtitle2 {
+      font-size: 26px;
+      margin-bottom: 28px;
+    }
 
-  .task-card.show {
-    display: block;
-  }
+    /* =========================
+       SEGMENT BUTTONS
+    ========================= */
 
-  /* rotating border */
-  .task-card::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    background: conic-gradient(
-      #8b5cf6,
-      #a855f7,
-      #d946ef,
-      #8b5cf6
-    );
-    animation: rotateBorder 3s linear infinite;
-    border-radius: 24px;
-    z-index: 0;
-  }
+    .segment {
+      background: #f0f0f0;
+      border-radius: 40px;
+      padding: 6px;
+      display: flex;
+      gap: 6px;
+      margin-bottom: 25px;
+    }
 
-  /* inner white box */
-  .task-card::after {
-    content: "";
-    position: absolute;
-    inset: 3px;
-    background: #ffffff;
-    border-radius: 18px;
-    z-index: 1;
-  }
+    .seg-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: #333;
+      padding: 15px 0;
+      font-size: 17px;
+      font-weight: 800;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
 
-  @keyframes rotateBorder {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
+    .seg-btn.active {
+      background: linear-gradient(
+        135deg,
+        #ff5fd2,
+        #8b5cf6
+      );
+      color: #fff;
+      font-weight: 900;
+    }
 
-  /* content */
-  .task-content {
-    position: relative;
-    z-index: 2;
-    padding: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+    /* =========================
+       TASK CARD
+    ========================= */
 
-  .task-left {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-  }
+    .task-card {
+      position: relative;
+      display: none;
+      margin-bottom: 16px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #fff;
+    }
 
-  .task-badge {
-    background: #000;
-    color: #fff;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 6px 10px;
-    border-radius: 8px;
-  }
+    .task-card.show {
+      display: block;
+    }
 
-  .task-title {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 4px;
-  }
+    /* Animated border */
 
-  .task-reward {
-    font-size: 14px;
-    color: #555;
-    font-weight: 600;
-  }
+    .task-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
 
-  /* Watch Ad Button */
-  .start-btn {
-    border: none;
-    padding: 12px 30px;
-    border-radius: 30px;
-    background: linear-gradient(135deg, #3b82f6, #06b6d4);
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
-    transition: transform 0.25s ease;
-  }
+      background: conic-gradient(
+        #8b5cf6,
+        #a855f7,
+        #d946ef,
+        #8b5cf6
+      );
 
-  .start-btn:hover {
-    transform: translateY(-2px);
-  }
+      animation: rotateBorder 3s linear infinite;
 
-  .start-btn:active {
-    transform: scale(0.96);
-  }
-</style>
+      border-radius: 24px;
+
+      z-index: 0;
+    }
+
+    /* White inner area */
+
+    .task-card::after {
+      content: "";
+
+      position: absolute;
+
+      inset: 3px;
+
+      background: #ffffff;
+
+      border-radius: 18px;
+
+      z-index: 1;
+    }
+
+    @keyframes rotateBorder {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       TASK CONTENT
+    ========================= */
+
+    .task-content {
+      position: relative;
+      z-index: 2;
+
+      padding: 18px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+    }
+
+    .task-left {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .task-badge {
+      background: #000;
+      color: #fff;
+
+      font-weight: 700;
+
+      font-size: 14px;
+
+      padding: 6px 10px;
+
+      border-radius: 8px;
+
+      flex-shrink: 0;
+    }
+
+    .task-title {
+      font-size: 18px;
+      font-weight: 800;
+
+      margin-bottom: 4px;
+
+      white-space: nowrap;
+    }
+
+    .task-reward {
+      font-size: 14px;
+
+      color: #555;
+
+      font-weight: 600;
+    }
+
+    /* =========================
+       WATCH AD BUTTON
+    ========================= */
+
+    .start-btn {
+      border: none;
+
+      padding: 12px 20px;
+
+      border-radius: 30px;
+
+      background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #06b6d4
+      );
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 0 15px
+        rgba(139, 92, 246, 0.6);
+
+      transition: 0.25s;
+
+      flex-shrink: 0;
+    }
+
+    .start-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .start-btn:active {
+      transform: scale(0.96);
+    }
+
+    .start-btn:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+
+      transform: none;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    #status {
+      margin-top: 20px;
+
+      text-align: center;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      min-height: 20px;
+    }
+
+    /* =========================
+       TEST INFO
+    ========================= */
+
+    .test-info {
+      margin-top: 25px;
+
+      padding: 12px;
+
+      background: #f5f5f5;
+
+      border-radius: 12px;
+
+      text-align: center;
+
+      font-size: 12px;
+
+      color: #666;
+    }
+
+    @media (max-width: 380px) {
+
+      .title {
+        font-size: 34px;
+      }
+
+      .subtitle {
+        font-size: 22px;
+      }
+
+      .subtitle2 {
+        font-size: 22px;
+      }
+
+      .task-content {
+        padding: 14px;
+      }
+
+      .task-title {
+        font-size: 15px;
+      }
+
+      .start-btn {
+        padding: 10px 14px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <div class="title">TASKS</div>
-  <div class="subtitle">GET REWARDS FOR</div>
-  <div class="subtitle2">COMPLETING QUESTS.</div>
+    <!-- =========================
+         HEADER
+    ========================= -->
 
-  <div class="segment">
-    <button class="seg-btn active" data-tab="ingame">In-game</button>
-    <button class="seg-btn" data-tab="partners">Partners</button>
-    <button class="seg-btn" data-tab="limited">Limited</button>
-  </div>
-
-  <!-- TASK CARD -->
-  <div class="task-card show" id="taskCard">
-    <div class="task-content">
-      <div class="task-left">
-        <div class="task-badge">Ad</div>
-        <div>
-          <div class="task-title">View ads & click</div>
-          <div class="task-reward">+0.30</div>
-        </div>
-      </div>
-      <button class="start-btn">Watch Ad</button>
+    <div class="title">
+      TASKS
     </div>
+
+    <div class="subtitle">
+      GET REWARDS FOR
+    </div>
+
+    <div class="subtitle2">
+      COMPLETING QUESTS.
+    </div>
+
+
+    <!-- =========================
+         TABS
+    ========================= -->
+
+    <div class="segment">
+
+      <button
+        class="seg-btn active"
+        data-tab="ingame">
+
+        In-game
+
+      </button>
+
+      <button
+        class="seg-btn"
+        data-tab="partners">
+
+        Partners
+
+      </button>
+
+      <button
+        class="seg-btn"
+        data-tab="limited">
+
+        Limited
+
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         ADSGRAM REWARD TASK
+    ========================= -->
+
+    <div
+      class="task-card show"
+      id="taskCard">
+
+      <div class="task-content">
+
+        <div class="task-left">
+
+          <div class="task-badge">
+            Ad
+          </div>
+
+          <div>
+
+            <div class="task-title">
+              View ads & click
+            </div>
+
+            <div class="task-reward">
+              Test Reward
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="start-btn"
+          id="watchAdBtn">
+
+          Watch Ad
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         STATUS
+    ========================= -->
+
+    <div id="status"></div>
+
+
+    <!-- =========================
+         TEST INFO
+    ========================= -->
+
+    <div class="test-info">
+
+      AdsGram Test Mode<br>
+
+      Block ID: 41765
+
+    </div>
+
   </div>
 
-</div>
 
-<script>
-  const buttons = document.querySelectorAll('.seg-btn');
-  const taskCard = document.getElementById('taskCard');
+  <script>
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+    /* =====================================
+       TELEGRAM MINI APP
+    ===================================== */
 
-      if (btn.dataset.tab === 'limited') {
-        taskCard.classList.remove('show');
-      } else {
-        taskCard.classList.add('show');
+    const tg = window.Telegram
+      ? window.Telegram.WebApp
+      : null;
+
+    if (tg) {
+
+      tg.ready();
+
+      tg.expand();
+
+    }
+
+
+    /* =====================================
+       ADSGRAM
+       TEST BLOCK
+    ===================================== */
+
+    let AdController = null;
+
+
+    function initializeAdsGram() {
+
+      try {
+
+        if (!window.Adsgram) {
+
+          console.error(
+            "AdsGram SDK not loaded"
+          );
+
+          return false;
+        }
+
+
+        AdController =
+          window.Adsgram.init({
+
+            blockId: "41765",
+
+            debug: true
+
+          });
+
+
+        console.log(
+          "AdsGram initialized successfully"
+        );
+
+
+        return true;
+
+      } catch (error) {
+
+        console.error(
+          "AdsGram initialization error:",
+          error
+        );
+
+        return false;
+
       }
-    });
-  });
-</script>
+
+    }
+
+
+    /* Initialize AdsGram */
+
+    initializeAdsGram();
+
+
+    /* =====================================
+       ELEMENTS
+    ===================================== */
+
+    const watchAdBtn =
+      document.getElementById(
+        "watchAdBtn"
+      );
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+    const buttons =
+      document.querySelectorAll(
+        ".seg-btn"
+      );
+
+    const taskCard =
+      document.getElementById(
+        "taskCard"
+      );
+
+
+    /* =====================================
+       WATCH AD
+    ===================================== */
+
+    watchAdBtn.addEventListener(
+      "click",
+      async function () {
+
+        /* Check AdsGram */
+
+        if (!AdController) {
+
+          status.textContent =
+            "❌ AdsGram load হয়নি।";
+
+          console.error(
+            "AdController is null"
+          );
+
+          return;
+
+        }
+
+
+        /* Disable button */
+
+        watchAdBtn.disabled = true;
+
+        watchAdBtn.textContent =
+          "Loading...";
+
+
+        status.textContent =
+          "Advertisement loading...";
+
+
+        try {
+
+          console.log(
+            "Opening AdsGram Reward Ad..."
+          );
+
+
+          /*
+             Show Reward Ad
+          */
+
+          await AdController.show();
+
+
+          /*
+             If show() resolves,
+             the ad was successfully
+             completed/shown according
+             to AdsGram's Reward flow.
+          */
+
+          console.log(
+            "AdsGram ad completed"
+          );
+
+
+          status.textContent =
+            "✅ Test ad completed successfully!";
+
+
+          watchAdBtn.textContent =
+            "Watch Ad Again";
+
+
+        } catch (error) {
+
+          console.error(
+            "AdsGram show error:",
+            error
+          );
+
+
+          status.textContent =
+            "❌ Ad দেখানো যায়নি। আবার চেষ্টা করুন।";
+
+
+          watchAdBtn.textContent =
+            "Watch Ad";
+
+        }
+
+
+        /* Enable button */
+
+        watchAdBtn.disabled = false;
+
+      }
+    );
+
+
+    /* =====================================
+       TABS
+    ===================================== */
+
+    buttons.forEach(
+      function (button) {
+
+        button.addEventListener(
+          "click",
+          function () {
+
+            /*
+              Remove active
+              from all buttons
+            */
+
+            buttons.forEach(
+              function (btn) {
+
+                btn.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+            /*
+              Activate clicked button
+            */
+
+            button.classList.add(
+              "active"
+            );
+
+
+            /*
+              Hide task on Limited
+            */
+
+            if (
+              button.dataset.tab ===
+              "limited"
+            ) {
+
+              taskCard.classList.remove(
+                "show"
+              );
+
+            } else {
+
+              taskCard.classList.add(
+                "show"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =====================================
+       DEBUG INFORMATION
+    ===================================== */
+
+    window.addEventListener(
+      "load",
+      function () {
+
+        console.log(
+          "Page loaded"
+        );
+
+        console.log(
+          "AdsGram available:",
+          !!window.Adsgram
+        );
+
+        console.log(
+          "AdController:",
+          AdController
+        );
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
